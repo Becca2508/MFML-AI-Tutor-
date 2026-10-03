@@ -1,0 +1,35 @@
+body {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif, Cambria;
+    line-height: 1.7;
+    background: #f8f1ff;
+    color:#151016;
+}
+
+section {
+    background: white;
+    margin: 20px 0;
+    padding: 24px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+h1, h2 {
+    color: #56a68c;
+}
+
+pre {
+    padding: 16px;
+    background: #eef2e8;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+
+summary {
+    cursor: pointer;
+    color: #245c49;
+    font-weight: bold;
+}

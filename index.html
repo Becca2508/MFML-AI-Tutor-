@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> MFML AI Tutor: SVD Walkthrough </title>
+        <meta name = "viewport" content = 'width=device-width', initial_scale = 1.0>
+        <link rel="stylesheet" type = "text/css" href="styles.css">
+    </head>
+    
+    <body>
+    <header>
+        <h1>MFML Tutor</h1>
+        <p>A guided introduction on how to approach singular value decomposition (SVD) problems.</p>
+    </header>
+
+    <main>
+        <section>
+        <h2> Understanding the Main Goal: </h2>
+        <p>
+            Using SVD, a matrix A can be re-written in the form: 
+            <strong>A = U&Sigma;Vᵀ</strong>.
+        </p>
+
+        <p>
+            This is made of up of three matrices:
+            <li> <strong> U </strong>: representing the matrix of left singular vectors</li>
+            <li> <strong> &Sigma;  </strong>: representing the matrix of singular values </li>
+            <li> <strong> V<sup>T</sup></strong>: representing the matrix of right singular values </li>
+
+        </p>
+
+        <p>
+            <strong>NOTE: </strong></string>Vᵀ changes the input coordinates, &Sigma; scales directions,
+            and U maps them into the output space.
+        </p>
+
+        <h3> Example Walkthrough: </h3>
+
+       <pre>A = [3  1]
+    [1  3]</pre>
+
+        <p>We will find the SVD of this matrix step by step.</p>
+        </section>
+
+
+        <section>
+        <h2>1. Calculating A<sup>T</sup>A</h2>
+        <p>
+            First, find the tranpose A, then multiply Aᵀ by A.
+            This example is symmetric, so Aᵀ = A.
+        </p>
+
+        <pre>AᵀA = [3 1][3 1]
+    [1 3] [1 3]
+    
+    = [3×3 + 1×1   3×1 + 1×3]
+    [1×3 + 3×1   1×1 + 3×3]
+
+    = [10   6]
+    [ 6  10]</pre>
+
+        <p><strong>Question:</strong> Why is the top-right entry 6?</p>
+
+        <details>
+            <summary>Give me a hint</summary>
+            <p>Take the dot product of the two columns of A.</p>
+        </details>
+
+        <details>
+            <summary>Show full  explanation</summary>
+            <p>The calculation is 3×1 + 1×3 = 6. We are multiplying the first row of A<sup>T</sup> with the second column of A</p>
+        </details>
+        </section>
+
+        <section>
+        <h2>2. Find the singular values</h2>
+        <p>Find the eigenvalues of AᵀA, by solving for the det(A<sup>T</sup>A - &lambda;I) = 0:</p>
+
+        <pre>det(AᵀA − &lambda;I) = 0
+
+    (10 − &lambda;)² − 36 = 0
+
+    &lambda;<sub>1</sub> = 16
+    &lambda;<sub>2</sub> = 4</pre>
+
+        <p><strong>Question:</strong> What are the singular values for the matrix?</p>
+
+        <details>
+            <summary>Hint?</summary>
+            <p>Singular values are the nonnegative square roots
+            of these eigenvalues.</p>
+        </details>
+
+        <details>
+            <summary>Show the singular values</summary>
+            <p>σ₁ = √16 = 4 and σ₂ = √4 = 2.</p>
+        </details>
+        </section>
+
+    </main>
+    </body>
+
+</html>
