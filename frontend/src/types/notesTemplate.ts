@@ -6,4 +6,6 @@ export interface sectionNotes {
     definition: string;
     example?: string;
   }[];
+  formulas?: { expression: string; explanation: string }[];
+  commonPitfalls?: string[];
 }
