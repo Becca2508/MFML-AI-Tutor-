@@ -4,6 +4,8 @@ import {NotesPanel} from "./components/notesSection.tsx"
 import {svdNotes} from "./data/mfmlNotes.ts"
 import type { StudyMode } from "./types/study";
 import "./App.css";
+import { GuidePanel } from "./guide/GuidePanel";
+import { svdGuide } from "./data/svdGuide";
 
 type CurrentStudyMode = "Notes" | "Guided Walkthrough" | "Practice"
 
@@ -70,7 +72,7 @@ export default function App() {
       )}
 
       {currentMode === "Guided Walkthrough" && (
-        <section>SVD walkthroughs will be added soon.</section>
+        <GuidePanel script={svdGuide} />
       )}
 
       {currentMode === "Practice" && (

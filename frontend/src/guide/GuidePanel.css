@@ -1,0 +1,94 @@
+.guide-panel {
+  text-align: left;
+  margin-top: 24px;
+}
+
+.guide-heading {
+  margin-bottom: 24px;
+}
+
+.guide-starting-matrix,
+.guide-step {
+  padding: 24px;
+  border: 1px solid #dce3ef;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.guide-step-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0;
+}
+
+.guide-step-buttons button[aria-current="step"] {
+  background: #3659a2;
+  color: white;
+}
+
+.guide-step-count {
+  color: #596781;
+  font-size: 0.85rem;
+}
+
+.guide-calculation {
+  padding: 16px;
+  margin: 20px 0;
+  background: #f1f4fb;
+  border-radius: 8px;
+}
+
+.guide-calculation pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+
+.guide-matrix {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 20px 0;
+}
+
+.guide-matrix table {
+  border-collapse: separate;
+  border-spacing: 12px 8px;
+  border-left: 2px solid #22314c;
+  border-right: 2px solid #22314c;
+}
+
+.guide-matrix caption {
+  text-align: left;
+  font-weight: bold;
+  padding-bottom: 12px;
+}
+
+.guide-matrix td {
+  text-align: right;
+  font-family: Consolas, monospace;
+}
+
+.guide-insight {
+  padding: 16px;
+  background: #e9efff;
+  border-left: 4px solid #3659a2;
+}
+
+.guide-insight h4 {
+  margin-top: 0;
+}
+
+.guide-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.guide-rounding-note {
+  color: #596781;
+  font-size: 0.8rem;
+}
