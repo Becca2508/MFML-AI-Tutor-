@@ -1,0 +1,17 @@
+MFML Course Specific Questions for Professor Interviews:
+
+1. Which topics do you find most students struggling in the most? Is it the 
+linear algebra topics or the probability topics?
+Is it more on the conceptual side or the problem solving side?
+
+2. Are there any specific topics you feel that it would be useful to have an
+interactive visualization included to make it more easier for students to understand?
+
+3. What are some major changes or improvements you would suggest based on how the tutor works currently?
+
+4. Do you feel that the usage of AI can be beneficial to students in understanding the MFML 
+topics better? What are your major concerns with the use of AI?
+
+5. Do you think application should be tailored at more of a beginner level helping
+students understand the basic concepts or towards more of a practice oriented resource 
+for those who are more familiar with the topics?
