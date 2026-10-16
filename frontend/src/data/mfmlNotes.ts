@@ -10,6 +10,27 @@ export const svdNotes: sectionNotes = {
             example: 'Given the two eigenvalues a = 16 and b = 4, the corresponding singular values will be 4 and 2'
         }, 
         {
+            term: "Eigenvalue",
+            definition:
+            "A scalar λ satisfying Av = λv for a nonzero vector v. The matrix scales the vector without changing its direction.",
+            example:
+            "If Av = 3v, then 3 is an eigenvalue and v is its corresponding eigenvector."
+        },
+        {
+            term: "Dot Product",
+            definition:
+            "Multiply corresponding components of two vectors, then add the results. For x = (x₁, x₂) and y = (y₁, y₂), x · y = x₁y₁ + x₂y₂. Two nonzero vectors are orthogonal when their dot product is zero.",
+            example:
+            "(3, 1) · (1, 3) = 3 × 1 + 1 × 3 = 6."
+        },
+        {
+            term: "Vector Normalization",
+            definition:
+            "Divide a nonzero vector by its length to obtain a unit vector pointing in the same direction: v̂ = v / ‖v‖. The zero vector cannot be normalized.",
+            example:
+            "The vector (3, 4) has length √(3² + 4²) = 5. Its normalized form is (3/5, 4/5)."
+        },
+        {
             term: 'Tranpose of a Matrix (A^T)',
             definition: 'The matrix obtained by making the columns of the matrix A, the rows of the Matrix A^T and vice versa',
             example: 'Given the matrix A = [1  3]    \n[2  4]\n\n, A^T = [1  2] \n [3  4]'
