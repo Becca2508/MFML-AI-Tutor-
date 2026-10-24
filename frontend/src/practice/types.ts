@@ -28,6 +28,11 @@ export interface NumericQuestion {
   answer: number;
   explanation: string;
   tolerance?: number;
+
+  mistakes?: {
+  value: number;
+  feedback: string;
+  }[];
 }
 
 /** Formats supported by the practice interface. */

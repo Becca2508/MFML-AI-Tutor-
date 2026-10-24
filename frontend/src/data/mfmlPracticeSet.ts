@@ -43,6 +43,24 @@ export const svdPractice: PracticeSet = {
       answer: 2,
       explanation: 'AᵀA = diag(4, 1), so the singular values are 2 and 1.',
 
+      mistakes: [
+      {
+        value: 4,
+        feedback:
+          "4 is the largest eigenvalue of AᵀA. Take its nonnegative square root."
+      },
+      {
+        value: 1,
+        feedback:
+          "1 is the smaller singular value. The question asks for the largest."
+      },
+      {
+        value: -2,
+        feedback:
+          "Singular values must be nonnegative."
+      }
+    ]
+
     },
     {
       id: 'practice-normalization', 
@@ -50,6 +68,19 @@ export const svdPractice: PracticeSet = {
       prompt: 'What is the length of the vector (3/5 4/5)?',
       answer: 1, 
       explanation: '√((3/5)² + (4/5)²) = √1 = 1, so the vector is already normalized',
+
+      mistakes: [
+      {
+        value: 1.4,
+        feedback:
+          "You added the components. For length, square each component, add, then take the square root."
+      },
+      {
+        value: 0.2,
+        feedback:
+          "The difference between the components is not the length. Use √(x² + y²)."
+      }
+    ]
     },
 
   ],
@@ -76,7 +107,7 @@ export const svdPractice: PracticeSet = {
         "The singular values are σ₁ = 3 and σ₂ = 1.\n\n" +
 
         "3. Find and normalize the eigenvectors:\n" +
-        "Write one unknown eigenvector column vectors be v = (x, y)ᵀ.\n" +
+        "Write one unknown eigenvector as the column vector v = (x, y)ᵀ.\n" +
         "For λ₁ = 9, −4x + 4y= 0, so y = x.\n" +
         "Choose (1, 1) and divide by its length √2:\n" +
         "v₁ = (1, 1)/√2.\n\n" +
