@@ -7,13 +7,27 @@ import "./App.css";
 import { GuidePanel } from "./guide/GuidePanel";
 import { svdGuide } from "./data/svdGuide";
 
-type CurrentStudyMode = "Notes" | "Guided Walkthrough" | "Practice"
+import { PracticePanel } from "./practice/practicePanel";
+import { svdPractice } from "./data/mfmlPracticeSet";
+import type { PracticeProgress } from "./practice/types";
+
+import {
+  loadPracticeProgress,
+  savePracticeProgress,
+} from "./utils/practiceProgress";
+
+type CurrentStudyMode = "Notes" | "Guided Walkthrough" | "Practice";
 
 export default function App() {
   const [screen, setScreen] = useState<"home" | "study">("home");
 
   const [currentMode, setMode] =
     useState<CurrentStudyMode>("Notes");
+
+  const [practiceProgress, setPracticeProgress] =
+    useState(() => loadPracticeProgress(svdPractice.topicId));
+
+  const [storageFailed, setStorageFailed] = useState(false);
 
   function openStudy(mode: StudyMode) {
     const matchingMode: Record<StudyMode, CurrentStudyMode> = {
@@ -26,9 +40,22 @@ export default function App() {
     setScreen("study");
   }
 
+  function updatePracticeProgress(next: PracticeProgress) {
+    // Update the interface.
+    setPracticeProgress(next);
+
+    // Save results for the next visit.
+    const saved = savePracticeProgress(
+      svdPractice.topicId,
+      next
+    );
+
+    setStorageFailed(!saved);
+  }
+
   // Show the homepage first.
   if (screen === "home") {
-    return <Home onOpen={openStudy} completed={0} />;
+    return <Home onOpen={openStudy} />;
   }
 
   return (
@@ -42,7 +69,7 @@ export default function App() {
         <p> Gain a better understanding of (MFML) Topics through notes, guided examples and practice problems!</p>
       </header>
 
-      <nav aria-label="Study Sections">
+      <nav className="study-navigation" aria-label="Study Sections">
         <button
           aria-pressed={currentMode === "Notes"}
           onClick={() => setMode("Notes")}
@@ -72,12 +99,27 @@ export default function App() {
       )}
 
       {currentMode === "Guided Walkthrough" && (
-        <GuidePanel script={svdGuide} />
+        <GuidePanel script={svdGuide} 
+        onPractice={() => setMode("Practice")}
+        />
       )}
 
-      {currentMode === "Practice" && (
-        <section>Practice problems to be added.</section>
-      )}
+    {currentMode === "Practice" && (
+      <>
+        <p className="progress-status">
+          {storageFailed
+            ? "Browser storage is unavailable. Progress will remain for this session only."
+            : "Practice progress is saved in this browser."}
+        </p>
+
+        <PracticePanel
+          practiceSet={svdPractice}
+          progress={practiceProgress}
+          onProgress={updatePracticeProgress}
+          onGuide={() => setMode("Guided Walkthrough")}
+        />
+      </>
+    )}
     </main>
   );
 }

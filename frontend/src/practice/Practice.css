@@ -1,0 +1,182 @@
+.practice-panel {
+  margin-top: 24px;
+  text-align: left;
+  min-width: 0;
+}
+
+.practice-panel p {
+  line-height: 1.7;
+}
+
+/* Stage and activity navigation */
+.practice-stage-buttons,
+.practice-stages,
+.practice-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.practice-stage-buttons button[aria-pressed="true"],
+.practice-stages button[aria-pressed="true"] {
+  background: #3659a2;
+  border-color: #3659a2;
+  color: white;
+}
+
+.practice-navigation {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.practice-panel button {
+  font: inherit;
+  padding: 10px 16px;
+  border: 1px solid #cbd5e6;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.practice-panel button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.practice-panel button:focus-visible,
+.practice-panel input:focus-visible,
+.practice-panel summary:focus-visible {
+  outline: 3px solid #3659a2;
+  outline-offset: 3px;
+}
+
+/* Flashcards */
+.practice-card {
+  padding: 24px;
+  background: #f1f4fb;
+  border: 1px solid #dce3ef;
+  border-radius: 12px;
+}
+
+.practice-card h3 {
+  margin-top: 0;
+}
+
+/* Multiple-choice questions */
+.practice-choices {
+  border: 0;
+  padding: 0;
+  margin: 24px 0;
+  min-width: 0;
+}
+
+.practice-choices legend {
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.practice-choices label {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.practice-choices input {
+  flex-shrink: 0;
+  accent-color: #3659a2;
+}
+
+/* Numerical questions */
+.numeric-question label {
+  display: block;
+  font-weight: 700;
+  margin: 16px 0;
+}
+
+.numeric-question input {
+  box-sizing: border-box;
+  width: 190px;
+  max-width: 100%;
+  padding: 10px;
+  margin: 0 12px 12px 0;
+  border: 1px solid #9caec8;
+  border-radius: 6px;
+  font: inherit;
+}
+
+/* Answer feedback */
+.practice-feedback:not(:empty) {
+  padding: 16px;
+  background: #e9efff;
+  border-left: 4px solid #3659a2;
+  border-radius: 4px;
+}
+
+.completion-note {
+  color: #215f4c;
+  font-weight: 600;
+}
+
+/* Independent challenge */
+.challenge-instructions {
+  padding: 16px;
+  margin: 20px 0;
+  background: #f1f4fb;
+  border-left: 4px solid #3659a2;
+  border-radius: 8px;
+}
+
+.challenge-solution {
+  padding: 20px;
+  margin-top: 24px;
+  background: #f8fafc;
+  border: 1px solid #dce3ef;
+  border-radius: 12px;
+}
+
+.challenge-solution pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  line-height: 1.8;
+}
+
+.challenge-reflection {
+  margin: 24px 0;
+  padding-top: 16px;
+  border-top: 1px solid #dce3ef;
+}
+
+.challenge-reflection li {
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.challenge-note {
+  color: #596781;
+  font-size: 0.85rem;
+}
+
+/* Narrow screens */
+@media (max-width: 480px) {
+  .practice-navigation {
+    align-items: stretch;
+  }
+
+  .practice-card,
+  .challenge-solution {
+    padding: 16px;
+  }
+
+  .numeric-question input {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+  }
+}
