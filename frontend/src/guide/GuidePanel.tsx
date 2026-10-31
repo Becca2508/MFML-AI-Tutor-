@@ -4,6 +4,7 @@ import "./GuidePanel.css";
 
 type GuidePanelProps = {
   script: GuideScript;
+  onPractice?: () => void;
 };
 
 // Reusable display for the starting and intermediate matrices.
@@ -35,7 +36,7 @@ function MatrixDisplay({
   );
 }
 
-export function GuidePanel({ script }: GuidePanelProps) {
+export function GuidePanel({ script, onPractice}: GuidePanelProps) {
   const [stepIndex, setStepIndex] = useState(0);
 
   const step = script.steps[stepIndex];
@@ -128,6 +129,12 @@ export function GuidePanel({ script }: GuidePanelProps) {
           Next →
         </button>
       </div>
+
+      {stepIndex === script.steps.length - 1 && onPractice && (
+        <button onClick={onPractice}>
+          Continue to practice →
+        </button>
+      )}
 
     </section>
   );

@@ -17,3 +17,9 @@ export interface GuideScript {
   matrix: Matrix;
   steps: GuideStep[];
 }
+
+export interface GuideProgress {
+  currentStepId: string | null;
+  completedStepIds: string[];
+  assistedStepIds: string[];
+}
