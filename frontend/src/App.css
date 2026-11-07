@@ -3,19 +3,24 @@ body {
   margin: 0;
   min-height: 100vh;
   padding: 48px 20px;
-  font-family: 'Fredoka One', 'Bubblegum Sans', sans-serif;
-  color: #243047;
-  background: linear-gradient(135deg, #eef2ff, #f0fdfa);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #22314c;
+  background: #f5f7fc;
 }
 
 button {
   font: inherit;
-  top: 50%;              
-  left: 50%;             
+  cursor:pointer;        
  
 }
 
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .app {
+  box-sizing: border-box;
   width: min(100%, 850px);
   margin: 0 auto;
   padding: clamp(24px, 5vw, 48px);
@@ -25,63 +30,105 @@ button {
   box-shadow: 0 20px 60px rgb(30 41 59 / 8%);
 }
 
-.app header {
+.study-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.study-toolbar .back-home-button {
+  position: static;
+  inset: auto;
+  transform: none;
+  margin: 0;
+  flex: 0 0 auto;
+  padding: 10px 16px;
+  white-space: nowrap;
+  color: #3659a2;
+  background: #ffffff;
+  border: 1px solid #cbd5e6;
+  border-radius: 9px;
+}
+
+.study-toolbar .back-home-button:hover {
+  background: #eef2ff;
+}
+
+.demo-label {
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: #3659a2;
+  background: #e9efff;
+  font-size: 0.8rem;
+}
+
+.study-heading {
   margin-bottom: 32px;
 }
 
-.app h1 {
+.study-heading h1 {
   margin: 0 0 12px;
+  font-family: Georgia, serif;
   font-size: clamp(2rem, 5vw, 3rem);
   letter-spacing: -0.04em;
   color: #501e5e;
 }
 
-.app header p {
-  margin-top: 32px; 
-  color: #64748b;
-  line-height: 1.6;
+.study-heading p {
+  margin: 0; 
+  color: #596781;
+  line-height: 1.7;
 }
 
-.app nav {
+.study-navigation {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 28px;
 }
 
-.app nav button {
+.study-navigation button {
   padding: 12px 20px;
-  border: 1px solid #dbe2ee;
+  border: 1px solid #dce3ef;
   border-radius: 12px;
   color: #475569;
   background: #f8fafc;
-  cursor: pointer;
   transition: background 180ms, box-shadow 180ms;
 }
 
-.app nav button:hover {
+.study-navigation button:hover {
   background: #eef2ff;
 }
 
-.app nav button[aria-pressed="true"] {
-  color: white;
-  background: #b4c5f8;
-  border-color: #4f46e5;
-  box-shadow: 0 4px 12px rgb(79 70 229 / 20%);
+.study-navigation button[aria-pressed="true"] {
+  color: #ffffff;
+  background: #3659a2;
+  border-color: #3659a2;
+  box-shadow: 0 4px 12px rgb(54 89 162 / 20%);
 }
 
-.app nav button:focus-visible {
+.study-navigation nav button:focus-visible,
+.back-home-button:focus-visible {
   outline: 3px solid #818cf8;
   outline-offset: 3px;
 }
 
-.app section {
-  min-height: 220px;
+notes-panel {
   padding: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #dce3ef;
   border-radius: 16px;
   background: #f8fafc;
   line-height: 1.7;
+}
+
+/* ADDED: Style the saved-progress message. */
+.progress-status {
+  color: #596781;
+  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
 @media (max-width: 480px) {
@@ -89,7 +136,11 @@ button {
     padding: 20px 12px;
   }
 
-  .app nav button {
+  .study-navigation nav button {
     width: 100%;
+  }
+
+  .demo-label {
+    font-size: 0.7rem;
   }
 }

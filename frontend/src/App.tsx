@@ -7,6 +7,12 @@ import "./App.css";
 import { GuidePanel } from "./guide/GuidePanel";
 import { svdGuide } from "./data/svdGuide";
 
+import type { GuideProgress } from "./types/guide";
+import {
+  loadGuideProgress,
+  saveGuideProgress,
+} from "./utils/guideProgress";
+
 import { PracticePanel } from "./practice/practicePanel";
 import { svdPractice } from "./data/mfmlPracticeSet";
 import type { PracticeProgress } from "./practice/types";
@@ -27,6 +33,9 @@ export default function App() {
   const [practiceProgress, setPracticeProgress] =
     useState(() => loadPracticeProgress(svdPractice.topicId));
 
+  const [guideProgress, setGuideProgress] =
+    useState(() => loadGuideProgress(svdGuide.topicId));
+
   const [storageFailed, setStorageFailed] = useState(false);
 
   function openStudy(mode: StudyMode) {
@@ -40,6 +49,11 @@ export default function App() {
     setScreen("study");
   }
 
+  function returnHome() {
+    setScreen("home");
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }
+
   function updatePracticeProgress(next: PracticeProgress) {
     // Update the interface.
     setPracticeProgress(next);
@@ -50,7 +64,22 @@ export default function App() {
       next
     );
 
-    setStorageFailed(!saved);
+    if (!saved) {
+      setStorageFailed(true);
+    }
+  }
+
+  function updateGuideProgress(next: GuideProgress) {
+    setGuideProgress(next);
+
+    const saved = saveGuideProgress(
+      svdGuide.topicId,
+      next
+    );
+
+    if (!saved) {
+      setStorageFailed(true);
+    }
   }
 
   // Show the homepage first.
@@ -60,14 +89,27 @@ export default function App() {
 
   return (
     <main className="app">
-      <button onClick={() => setScreen("home")}>
+    <div className="study-toolbar">
+      <button
+        className="back-home-button"
+        type="button"
+        onClick={returnHome}
+      >
         ← Back to home
       </button>
 
-      <header>
-        <h1> MFML AI Tutor</h1>
-        <p> Gain a better understanding of (MFML) Topics through notes, guided examples and practice problems!</p>
-      </header>
+      <span className="demo-label">
+        Guided learning demo</span>
+    </div>
+
+    <header className="study-heading">
+      <h1>MFML AI Tutor</h1>
+      <p>
+        Explore MFML topics through study notes, guided
+        examples, and practice problems.
+      </p>
+    </header>
+
 
       <nav className="study-navigation" aria-label="Study Sections">
         <button
@@ -92,6 +134,14 @@ export default function App() {
         </button>
       </nav>
 
+      {currentMode !== "Notes" && (
+        <p className="progress-status" role="status">
+          {storageFailed
+            ? "Browser storage is unavailable. Current progress is kept for this session."
+            : "Progress is saved in this browser."}
+        </p>
+      )}
+
       {currentMode === "Notes" && (
         <NotesPanel notes={svdNotes} 
         onGuide={() => setMode("Guided Walkthrough")} />
@@ -100,25 +150,20 @@ export default function App() {
 
       {currentMode === "Guided Walkthrough" && (
         <GuidePanel script={svdGuide} 
+        progress={guideProgress}
+        onProgress={updateGuideProgress}
         onPractice={() => setMode("Practice")}
+        onNotes={() => setMode("Notes")}
         />
       )}
 
     {currentMode === "Practice" && (
-      <>
-        <p className="progress-status">
-          {storageFailed
-            ? "Browser storage is unavailable. Progress will remain for this session only."
-            : "Practice progress is saved in this browser."}
-        </p>
-
         <PracticePanel
           practiceSet={svdPractice}
           progress={practiceProgress}
           onProgress={updatePracticeProgress}
           onGuide={() => setMode("Guided Walkthrough")}
         />
-      </>
     )}
     </main>
   );

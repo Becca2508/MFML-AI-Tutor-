@@ -1,3 +1,5 @@
+import type { NumericQuestion } from '../practice/types';
+
 export type Matrix = number[][];
 
 export interface GuideStep {
@@ -9,6 +11,8 @@ export interface GuideStep {
   matrix?: Matrix;
   matrixLabel?: string;
   insight: string;
+  hints?: string[];
+  checkpoint?: NumericQuestion;
 }
 
 export interface GuideScript {

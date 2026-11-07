@@ -1,10 +1,13 @@
 import { useState } from "react";
-import type { GuideScript, Matrix } from "../types/guide";
+import type { GuideScript, GuideProgress, Matrix} from "../types/guide";
 import "./GuidePanel.css";
 
 type GuidePanelProps = {
   script: GuideScript;
+  progress: GuideProgress;
+  onProgress: (next: GuideProgress) => void;
   onPractice?: () => void;
+  onNotes: () => void;
 };
 
 // Reusable display for the starting and intermediate matrices.
@@ -36,19 +39,28 @@ function MatrixDisplay({
   );
 }
 
-export function GuidePanel({ script, onPractice}: GuidePanelProps) {
-  const [stepIndex, setStepIndex] = useState(0);
+export function GuidePanel({ script, progress,
+  onProgress, onPractice, onNotes}: GuidePanelProps) {
+  
+  const savedIndex = script.steps.findIndex(
+    item => item.id === progress.currentStepId
+  );
+
+  const stepIndex = savedIndex >= 0 ? savedIndex : 0;
 
   const step = script.steps[stepIndex];
 
-  function previousStep() {
-    setStepIndex(current => Math.max(0, current - 1));
-  }
+  function goToStep(index: number) {
+    const nextStep = script.steps[index];
 
-  function nextStep() {
-    setStepIndex(current =>
-      Math.min(script.steps.length - 1, current + 1)
-    );
+    if (!nextStep) {
+      return;
+    }
+
+    onProgress({
+      ...progress,
+      currentStepId: nextStep.id,
+    });
   }
 
   if (!step) {
@@ -75,7 +87,7 @@ export function GuidePanel({ script, onPractice}: GuidePanelProps) {
           <button
             key={item.id}
             aria-current={index === stepIndex ? "step" : undefined}
-            onClick={() => setStepIndex(index)}
+            onClick={() => goToStep(index)}
           >
             {index + 1}. {item.label}
           </button>
@@ -113,9 +125,13 @@ export function GuidePanel({ script, onPractice}: GuidePanelProps) {
       <div className="guide-navigation">
         <button
           disabled={stepIndex === 0}
-          onClick={previousStep}
+          onClick={() => goToStep(stepIndex - 1)}
         >
           ← Previous
+        </button>
+
+        <button type="button" onClick={onNotes}>
+          Review the notes
         </button>
 
         <span>
@@ -123,8 +139,9 @@ export function GuidePanel({ script, onPractice}: GuidePanelProps) {
         </span>
 
         <button
+          type="button"
           disabled={stepIndex === script.steps.length - 1}
-          onClick={nextStep}
+          onClick={() => goToStep(stepIndex + 1)}
         >
           Next →
         </button>

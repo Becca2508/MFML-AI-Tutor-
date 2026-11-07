@@ -40,10 +40,19 @@ export type PracticeQuestion =
   | McqQuestion
   | NumericQuestion;
 
+export interface ChallengeCheckpoint {
+  id: string;
+  title: string;
+  instructions: string;
+  question: NumericQuestion;
+  hints: string[];
+}
+
 /** Longer problem with a worked solution and review criteria. */
 export interface ChallengeProblem {
   id: string;
   prompt: string;
+  checkpoints?: ChallengeCheckpoint[];
   solution: string;
   explanation?: string;
   rubric: string
@@ -55,4 +64,13 @@ export interface PracticeSet {
   warmup: Flashcard[];
   practice: PracticeQuestion[];
   challenge: ChallengeProblem[];
+}
+
+export interface PracticeProgress {
+  stage: Stage;
+  warmupDone: boolean;
+  practiceAttempted: Record<string, boolean>;
+  practiceCorrect: Record<string, boolean>;
+  challengeAttempted: string[];
+  challengeReviewed: string[];
 }
