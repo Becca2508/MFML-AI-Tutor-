@@ -111,28 +111,23 @@ export default function App() {
     </header>
 
 
-      <nav className="study-navigation" aria-label="Study Sections">
-        <button
-          aria-pressed={currentMode === "Notes"}
-          onClick={() => setMode("Notes")}
-        >
-          Study Notes
-        </button>
+      <div className="study-selector">
+        <label htmlFor="study-mode">Choose a study section</label>
 
-        <button
-          aria-pressed={currentMode === "Guided Walkthrough"}
-          onClick={() => setMode("Guided Walkthrough")}
+        <select
+          id="study-mode"
+          value={currentMode}
+          onChange={event =>
+            setMode(event.target.value as CurrentStudyMode)
+          }
         >
-          Guided Walkthrough
-        </button>
-
-        <button
-          aria-pressed={currentMode === "Practice"}
-          onClick={() => setMode("Practice")}
-        >
-          Practice Problems
-        </button>
-      </nav>
+          <option value="Notes">Study Notes</option>
+          <option value="Guided Walkthrough">
+            Guided Walkthrough
+          </option>
+          <option value="Practice">Practice Problems</option>
+        </select>
+    </div>
 
       {currentMode !== "Notes" && (
         <p className="progress-status" role="status">
