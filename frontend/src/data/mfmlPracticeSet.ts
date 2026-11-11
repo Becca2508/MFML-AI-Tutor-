@@ -88,6 +88,18 @@ export const svdPractice: PracticeSet = {
   challenge: [
     {
       id: 'challenge-values', 
+
+      finalAnswer: {
+      kind: "numeric",
+      answer: 5,
+      tolerance: 0.001,
+    },
+
+    hints: [
+      "Which matrix has eigenvalues equal to the squared singular values?",
+      "The columns are dependent. Use the rank and trace of AᵀA to find its nonzero eigenvalue.",
+    ],
+
       checkpoints: [
   {
     "id": "rank-gram",
@@ -147,7 +159,20 @@ export const svdPractice: PracticeSet = {
       rubric: "Calculate AᵀA correctly, find its largest eigenvalue and take its nonnegative square root.",
     },
     {
-        id: 'svd-full-challenge',
+      id: 'svd-full-challenge',
+      finalAnswer: {
+      kind: "svd",
+      matrix: [
+        [2, 1],
+        [1, 2],
+      ],
+      tolerance: 0.005,
+    },
+
+    hints: [
+      "Find orthonormal eigenvectors of AᵀA to construct V.",
+      "Take square roots of the eigenvalues, then calculate uᵢ = Avᵢ/σᵢ.",
+    ],
       checkpoints: [
   {
     "id": "full-gram",
@@ -252,7 +277,7 @@ export const svdPractice: PracticeSet = {
     ]
   }
 ],
-        prompt: "Find an SVD of A = [2 1; 1 2]. Calculate AᵀA, find its eigenvalues and normalized eigenvectors. Construct V, Σ, and U, then verify A = UΣVᵀ.",
+        prompt: "Find an SVD of A = [2 1; 1 2]. Submit V, Σ, and U, with the singular values in descending order. Then verify the decomposition using A = UΣVᵀ.",
 
     solution: 
         "1. Calculate AᵀA:\n" +

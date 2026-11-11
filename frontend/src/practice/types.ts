@@ -40,6 +40,18 @@ export type PracticeQuestion =
   | McqQuestion
   | NumericQuestion;
 
+  export type ChallengeAnswer =
+  | {
+      kind: "numeric";
+      answer: number;
+      tolerance?: number;
+    }
+  | {
+      kind: "svd";
+      matrix: number[][];
+      tolerance?: number;
+    };
+
 export interface ChallengeCheckpoint {
   id: string;
   title: string;
@@ -52,6 +64,8 @@ export interface ChallengeCheckpoint {
 export interface ChallengeProblem {
   id: string;
   prompt: string;
+  finalAnswer: ChallengeAnswer;
+  hints: string[];
   checkpoints?: ChallengeCheckpoint[];
   solution: string;
   explanation?: string;
