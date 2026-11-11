@@ -50,6 +50,12 @@
   outline-offset: 3px;
 }
 
+.practice-panel button.primary {
+  color: #ffffff;
+  background: #3659a2;
+  border-color: #3659a2;
+}
+
 /* Flashcards */
 .practice-card {
   padding: 24px;
@@ -92,6 +98,11 @@
   accent-color: #3659a2;
 }
 
+.practice-choices label:has(input:checked) {
+  border-color: #748fc6;
+  background: #eef2ff;
+}
+
 /* Numerical questions */
 .numeric-question label {
   display: block;
@@ -110,6 +121,19 @@
   font: inherit;
 }
 
+.practice-panel .question-actions {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.practice-panel .question-actions input {
+  min-width: 0;
+  margin: 0;
+}
+
 /* Answer feedback */
 .practice-feedback:not(:empty) {
   padding: 16px;
@@ -123,15 +147,123 @@
   font-weight: 600;
 }
 
-/* Independent challenge */
-.challenge-instructions {
-  padding: 16px;
-  margin: 20px 0;
-  background: #f1f4fb;
-  border-left: 4px solid #3659a2;
-  border-radius: 8px;
+.practice-panel .subtle,
+.challenge-note {
+  color: #596781;
+  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
+.challenge-final-value {
+  display: grid;
+  gap: 10px;
+  max-width: 300px;
+  margin: 20px 0;
+}
+
+.challenge-final-value > span {
+  font-weight: 600;
+}
+
+.challenge-final-value input,
+.matrix-input-grid input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  font: inherit;
+  border: 1px solid #9caec8;
+  border-radius: 6px;
+  color: #22314c;
+  background: #ffffff;
+}
+
+/* ADDED: U, Σ, and V final-answer groups */
+.challenge-factors {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.challenge-factors fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 16px;
+  border: 1px solid #dce3ef;
+  border-radius: 12px;
+}
+
+.challenge-factors legend {
+  padding: 0 8px;
+  font-weight: 700;
+}
+
+.matrix-input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.checkpoint-toggle {
+  margin-top: 20px;
+}
+
+.challenge-support {
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid #cbd5e6;
+  border-radius: 12px;
+  background: #f5f7fc;
+}
+
+.challenge-support > h4 {
+  margin-top: 0;
+}
+
+.challenge-checkpoint {
+  min-width: 0;
+  margin: 20px 0;
+}
+
+.challenge-checkpoint h4 {
+  font-size: 1.1rem;
+}
+
+.practice-panel .hint-panel {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #dce3ef;
+}
+
+.practice-panel .hint-panel ol {
+  padding-left: 24px;
+}
+
+.practice-panel .hint-panel li {
+  margin-bottom: 10px;
+  line-height: 1.7;
+}
+
+.practice-panel .answer-reveal {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #dce3ef;
+}
+
+.practice-panel .reveal-confirmation {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #cbd5e6;
+  border-radius: 10px;
+  background: #e9efff;
+}
+
+.practice-panel .revealed-content {
+  margin-top: 20px;
+}
+
+/* Independent challenge */
 .challenge-solution {
   padding: 20px;
   margin-top: 24px;
@@ -158,9 +290,10 @@
   line-height: 1.6;
 }
 
-.challenge-note {
-  color: #596781;
-  font-size: 0.85rem;
+@media (max-width: 600px) {
+  .challenge-factors {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Narrow screens */
@@ -170,7 +303,8 @@
   }
 
   .practice-card,
-  .challenge-solution {
+  .challenge-solution,
+  .challenge-support {
     padding: 16px;
   }
 
@@ -178,5 +312,10 @@
     display: block;
     width: 100%;
     margin-right: 0;
+  }
+
+    .practice-panel .question-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

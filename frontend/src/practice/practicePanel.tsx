@@ -1,6 +1,4 @@
 import { useState } from "react";
-import "./Practice.css";
-
 import type {
   PracticeSet,
   PracticeProgress,
@@ -23,6 +21,7 @@ type PracticePanelProps = {
   onGuide: () => void;
 };
 
+
 export function PracticePanel({
   practiceSet,
   progress,
@@ -30,6 +29,20 @@ export function PracticePanel({
   onGuide,
 }: PracticePanelProps) {
   const [index, setIndex] = useState(0);
+
+  function recordChallengeAttempt(id: string) {
+  if (progress.challengeAttempted.includes(id)) {
+    return;
+  }
+
+  onProgress({
+    ...progress,
+    challengeAttempted: addUnique(
+      progress.challengeAttempted,
+      id
+    ),
+  });
+  }
 
   const stage = progress.stage;
 
@@ -172,6 +185,7 @@ export function PracticePanel({
               reviewed={
                 progress.challengeReviewed.includes(challenge.id)
               }
+              onAttempt={() => recordChallengeAttempt(challenge.id)}
               onReview={() =>
                 markChallengeReviewed(challenge.id)
               }
