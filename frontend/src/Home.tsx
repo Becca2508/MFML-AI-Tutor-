@@ -4,10 +4,9 @@ import './Home.css';
 
 type HomeProps = {
   onOpen: (mode: StudyMode) => void;
-  completed: number;
 };
 
-export default function Home({ onOpen, completed }: HomeProps) {
+export default function Home({ onOpen }: HomeProps) {
   const [showAnswer, setShowAnswer] = useState(false);
 
   return (
@@ -46,25 +45,14 @@ export default function Home({ onOpen, completed }: HomeProps) {
               <div className="mf-actions">
                 <button
                   className="mf-button"
-                  onClick={() => onOpen("guide")}
+                  onClick={() => onOpen("notes")}
                 >
-                  {completed > 0
-                    ? "Continue the walkthrough"
-                    : "Start learning"}
+                  Start Learning
                   <span aria-hidden="true"> →</span>
                 </button>
 
-                <button
-                  className="mf-button-secondary"
-                  onClick={() => onOpen("notes")}
-                >
-                  Review the notes
-                </button>
               </div>
 
-              <p className="mf-progress">
-                {completed}/6 SVD checkpoints completed
-              </p>
             </div>
 
             {/* COLLAGE */}

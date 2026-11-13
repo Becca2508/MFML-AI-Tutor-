@@ -93,25 +93,16 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
+  justify-content: center;
   margin-top: 24px;
 }
 
-.mf-button,
-.mf-button-secondary {
+.mf-button {
   border-radius: 10px;
   padding: 12px 18px;
-}
-
-.mf-button {
   color: white;
   background: var(--mf-blue);
   border: 1px solid var(--mf-blue);
-}
-
-.mf-button-secondary {
-  color: var(--mf-blue);
-  background: white;
-  border: 1px solid var(--mf-border);
 }
 
 .mf-progress {
