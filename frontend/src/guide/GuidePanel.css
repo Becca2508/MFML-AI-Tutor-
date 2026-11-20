@@ -1,4 +1,5 @@
 .guide-panel {
+  min-width: 0;
   text-align: left;
   margin-top: 24px;
 }
@@ -7,12 +8,22 @@
   margin-bottom: 24px;
 }
 
-.guide-starting-matrix,
-.guide-step {
+.guide-heading h2 {
+  margin: 0 0 12px;
+}
+.guide-heading p {
+  color: #596781;
+}
+
+.guide-starting-matrix {
   padding: 24px;
   border: 1px solid #dce3ef;
   border-radius: 12px;
-  background: #ffffff;
+  background: #edf1fa;
+}
+
+.guide-starting-matrix h3 {
+  margin-top: 0;
 }
 
 .guide-step-buttons {
@@ -22,27 +33,177 @@
   margin: 24px 0;
 }
 
+.guide-step-buttons button {
+  background: #ffffff;
+  color: #22314c;
+  padding: 10px 14px;
+  font:inherit;
+  border: 1px solid #cbd5e6;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.guide-step-buttons button:hover {
+  background: #eef2ff;
+}
+
 .guide-step-buttons button[aria-current="step"] {
+  color: #ffffff;
   background: #3659a2;
-  color: white;
+  border-color: #3659a2;
+}
+
+.guide-step-buttons button[aria-current="step"]:hover {
+  background: #2b4784;
 }
 
 .guide-step-count {
+  margin-bottom: 16px;
   color: #596781;
   font-size: 0.85rem;
 }
 
-.guide-calculation {
-  padding: 16px;
-  margin: 20px 0;
-  background: #f1f4fb;
+.guide-step {
+  min-width: 0;
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid #dce3ef;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.guide-step-heading {
+  margin-bottom: 28px;
+}
+
+.guide-step-heading h3 {
+  margin: 0 0 12px;
+  color: #22314c;
+  font-size: 1.5rem;
+  line-height: 1.3;
+}
+
+.guide-step-heading p {
+  margin: 0;
+  color: #596781;
+  line-height: 1.7;
+}
+
+.guide-question {
+  margin-bottom: 24px;
+}
+
+.guide-panel .numeric-question label {
+  display: block;
+  margin: 0 0 14px;
+  color: #22314c;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.guide-panel .question-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.guide-panel .numeric-question input {
+  box-sizing: border-box;
+  width: 180px;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 10px;
+  font: inherit;
+  color: #22314c;
+  background: #ffffff;
+  border: 1px solid #9caec8;
   border-radius: 8px;
+}
+
+.guide-panel .practice-feedback:not(:empty) {
+  padding: 14px 16px;
+  border-left: 3px solid #3659a2;
+  border-radius: 4px;
+  background: #e9efff;
+  line-height: 1.7;
+}
+
+.guide-panel .completion-note,
+.guide-panel .subtle {
+  color: #596781;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.guide-help {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #dce3ef;
+}
+
+.guide-help summary {
+  width: fit-content;
+  color: #3659a2;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.guide-help .hint-panel {
+  margin-top: 16px;
+  padding: 0;
+  border: 0;
+}
+
+.guide-help .hint-panel ol {
+  padding-left: 22px;
+}
+
+.guide-help .hint-panel li {
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+.guide-comparison {
+  margin-top: 28px;
+}
+
+.guide-comparison .answer-reveal {
+  margin: 0;
+  padding-top: 20px;
+  border-top: 1px solid #dce3ef;
+}
+
+.guide-comparison .reveal-confirmation {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid #cbd5e6;
+  border-radius: 10px;
+  background: #f5f7fc;
+}
+
+.guide-comparison .revealed-content {
+  margin-top: 20px;
+}
+
+
+.guide-calculation {
+  padding: 20px;
+  margin: 0;
+  background: #f5f7fc;
+  border-radius: 12px;
 }
 
 .guide-calculation pre {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   line-height: 1.8;
+  max-width: 100%
+}
+
+.guide-calculation h4 {
+  margin: 0 0 12px;
 }
 
 .guide-matrix {
@@ -68,15 +229,15 @@
   text-align: right;
   font-family: Consolas, monospace;
 }
-
-.guide-insight {
-  padding: 16px;
-  background: #e9efff;
-  border-left: 4px solid #3659a2;
+.guide-reasoning {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #dce3ef;
 }
 
-.guide-insight h4 {
-  margin-top: 0;
+.guide-reasoning p {
+  margin-bottom: 0;
+  line-height: 1.7;
 }
 
 .guide-navigation {
@@ -88,7 +249,60 @@
   margin-top: 24px;
 }
 
+.guide-panel button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.guide-panel button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.guide-panel button.primary {
+  color: #ffffff;
+  background: #3659a2;
+  border-color: #3659a2;
+}
+
+.guide-panel button.primary:hover:not(:disabled) {
+  background: #2b4784;
+}
+
+.guide-panel button:focus-visible,
+.guide-panel input:focus-visible,
+.guide-panel summary:focus-visible {
+  outline: 3px solid #818cf8;
+  outline-offset: 3px;
+}
+
+.guide-complete {
+  margin-top: 24px;
+  padding: 16px;
+  border-radius: 10px;
+  color: #22314c;
+  background: #e9efff;
+}
+
 .guide-rounding-note {
   color: #596781;
   font-size: 0.8rem;
+}
+
+@media (max-width: 480px) {
+  .guide-starting-matrix,
+  .guide-step,
+  .guide-calculation {
+    padding: 16px;
+  }
+
+  .guide-panel .question-actions,
+  .guide-navigation {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .guide-panel .numeric-question input {
+    width: 100%;
+  }
 }

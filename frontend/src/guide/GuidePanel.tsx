@@ -1,5 +1,11 @@
 import { useState } from "react";
-import type { GuideScript, GuideProgress, Matrix} from "../types/guide";
+import type { GuideScript, GuideProgress, GuideStep} from "../types/guide";
+import { MatrixDisplay } from '../components/MatrixDisplay';
+import { AnswerReveal } from '../components/AnswerReveal';
+import { NumericQuestion } from '../practice/NumericQuestions';
+import { HintLadderPanel } from '../practice/HintLadderPanel';
+import { addUnique } from '../utils/storage';
+import { canUseHints, canRevealSolution } from '../utils/learningPolicy';
 import "./GuidePanel.css";
 
 type GuidePanelProps = {
@@ -10,32 +16,80 @@ type GuidePanelProps = {
   onNotes: () => void;
 };
 
-// Reusable display for the starting and intermediate matrices.
-function MatrixDisplay({
-  matrix,
-  label,
-}: {
-  matrix: Matrix;
-  label: string;
-}) {
-  return (
-    <div className="guide-matrix">
-      <table>
-        <caption>{label}</caption>
+type GuideActivityProps = {
+  step: GuideStep;
+  completed: boolean;
+  onComplete: () => void;
+  onAssistance: () => void;
+};
 
-        <tbody>
-          {matrix.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-              {row.map((value, columnIndex) => (
-                <td key={columnIndex}>
-                  {Number(value.toFixed(3))}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+function GuideActivity({step, completed, onComplete, onAssistance, }: GuideActivityProps) {
+  const [attempts, setAttempts] = useState(0);
+  const helpAllowed = !step.checkpoint || completed || canUseHints(attempts);
+  const workAllowed = !step.checkpoint || canRevealSolution(attempts, completed);
+  return (
+    <article className="guide-step">
+      <header className="guide-step-heading">
+        <h3>{step.title}</h3>
+        <p>{step.body}</p>
+      </header>
+
+      {step.checkpoint && (
+        <section className="guide-question"> 
+        <NumericQuestion 
+          question={step.checkpoint}
+          showWorkedFeedback={false} 
+          onAttempt={setAttempts} 
+          onResult={(_, correct) => { if (correct) onComplete(); 
+          }
+        }
+      />
+      </section> 
+    )}
+
+    {(step.hints?.length ?? 0) > 0 && (
+      <details className="guide-help">
+        <summary>Need a hint?</summary>
+
+
+        <HintLadderPanel 
+        hints={step.hints || []} 
+        allowed={helpAllowed} 
+        attempts={completed || !step.checkpoint
+        ? undefined : attempts} 
+        
+        onAssistance={onAssistance} 
+      />
+    </details>
+)}
+
+  {step.id !== "svd-dimensions"  && workAllowed && (
+        <section className="guide-comparison">
+          <AnswerReveal
+            allowed={workAllowed}
+            label="worked calculation"
+            onReveal={onAssistance}
+          >
+            <div className="guide-calculation">
+              <h4>Worked calculation</h4>
+              <pre>{step.equation}</pre>
+
+              {step.matrix && (
+                <MatrixDisplay
+                  matrix={step.matrix}
+                  label={step.matrixLabel ?? "Result"}
+                />
+              )}
+
+              <div className="guide-reasoning">
+                <h4>Why this step matters</h4>
+                <p>{step.insight}</p>
+              </div>
+            </div>
+          </AnswerReveal>
+        </section>
+      )}
+    </article>
   );
 }
 
@@ -95,31 +149,33 @@ export function GuidePanel({ script, progress,
       </nav>
 
       {/* Current step content */}
-      <article className="guide-step">
-        <p className="guide-step-count">
-          Step {stepIndex + 1} of {script.steps.length}
-        </p>
+      <p className="guide-step-count">
+        Step {stepIndex + 1} of {script.steps.length}
+      </p>
 
-        <h3>{step.title}</h3>
-        <p>{step.body}</p>
-
-        <div className="guide-calculation">
-          <h4>Calculation</h4>
-          <pre>{step.equation}</pre>
-        </div>
-
-        {step.matrix && (
-          <MatrixDisplay
-            matrix={step.matrix}
-            label={step.matrixLabel ?? "Result"}
-          />
-        )}
-
-        <aside className="guide-insight">
-          <h4>Why this matters</h4>
-          <p>{step.insight}</p>
-        </aside>
-      </article>
+      <GuideActivity
+        key={step.id}
+        step={step}
+        completed={progress.completedStepIds.includes(step.id)}
+        onComplete={() =>
+          onProgress({
+            ...progress,
+            completedStepIds: addUnique(
+              progress.completedStepIds,
+              step.id
+            ),
+          })
+        }
+        onAssistance={() =>
+          onProgress({
+            ...progress,
+            assistedStepIds: addUnique(
+              progress.assistedStepIds,
+              step.id
+            ),
+          })
+        }
+      />
 
       {/* Sequential navigation */}
       <div className="guide-navigation">
@@ -134,25 +190,27 @@ export function GuidePanel({ script, progress,
           Review the notes
         </button>
 
-        <span>
-          {stepIndex + 1} / {script.steps.length}
-        </span>
-
+        {stepIndex < script.steps.length - 1 ? (
         <button
           type="button"
-          disabled={stepIndex === script.steps.length - 1}
+          className="primary"
           onClick={() => goToStep(stepIndex + 1)}
         >
           Next →
         </button>
-      </div>
-
-      {stepIndex === script.steps.length - 1 && onPractice && (
-        <button onClick={onPractice}>
+      
+        ) : (
+          onPractice && (
+        <button 
+          type="button"
+          className="primary"
+          onClick={onPractice}>
           Continue to practice →
         </button>
+          )
       )}
 
-    </section>
+    </div>
+  </section>
   );
 }
