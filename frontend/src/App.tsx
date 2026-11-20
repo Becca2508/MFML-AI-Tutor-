@@ -9,6 +9,7 @@ import { svdGuide } from "./data/svdGuide";
 
 import type { GuideProgress } from "./types/guide";
 import {
+  emptyGuideProgress,
   loadGuideProgress,
   saveGuideProgress,
 } from "./utils/guideProgress";
@@ -18,6 +19,7 @@ import { svdPractice } from "./data/mfmlPracticeSet";
 import type { PracticeProgress } from "./practice/types";
 
 import {
+  emptyPracticeProgress,
   loadPracticeProgress,
   savePracticeProgress,
 } from "./utils/practiceProgress";
@@ -38,6 +40,13 @@ export default function App() {
 
   const [storageFailed, setStorageFailed] = useState(false);
 
+  const [showResetConfirmation, setShowResetConfirmation] =
+    useState(false);
+
+  const [resetMessage, setResetMessage] = useState("");
+
+  const [resetVersion, setResetVersion] = useState(0);
+
   function openStudy(mode: StudyMode) {
     const matchingMode: Record<StudyMode, CurrentStudyMode> = {
       notes: "Notes",
@@ -51,7 +60,15 @@ export default function App() {
 
   function returnHome() {
     setScreen("home");
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      
+    setShowResetConfirmation(false);
+    setResetMessage("");
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
   }
 
   function updatePracticeProgress(next: PracticeProgress) {
@@ -67,6 +84,8 @@ export default function App() {
     if (!saved) {
       setStorageFailed(true);
     }
+
+    setResetMessage("");
   }
 
   function updateGuideProgress(next: GuideProgress) {
@@ -80,6 +99,44 @@ export default function App() {
     if (!saved) {
       setStorageFailed(true);
     }
+
+    setResetMessage("");
+  }
+
+    function resetSvdProgress() {
+    const freshGuide = emptyGuideProgress();
+    const freshPractice = emptyPracticeProgress();
+
+    const guideSaved = saveGuideProgress(
+      svdGuide.topicId,
+      freshGuide
+    );
+
+    const practiceSaved = savePracticeProgress(
+      svdPractice.topicId,
+      freshPractice
+    );
+
+    setGuideProgress(freshGuide);
+    setPracticeProgress(freshPractice);
+
+    const saved = guideSaved && practiceSaved;
+    setStorageFailed(!saved);
+
+    setResetVersion(previous => previous + 1);
+    setShowResetConfirmation(false);
+
+    setResetMessage(
+      saved
+        ? "SVD progress reset. You can begin again."
+        : "Progress reset for this session, but the browser could not save the reset."
+    );
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant",
+    });
   }
 
   // Show the homepage first.
@@ -144,7 +201,9 @@ export default function App() {
       )}
 
       {currentMode === "Guided Walkthrough" && (
-        <GuidePanel script={svdGuide} 
+        <GuidePanel 
+        key={`guide-${resetVersion}`}
+        script={svdGuide}
         progress={guideProgress}
         onProgress={updateGuideProgress}
         onPractice={() => setMode("Practice")}
@@ -154,12 +213,61 @@ export default function App() {
 
     {currentMode === "Practice" && (
         <PracticePanel
+          key={`practice-${resetVersion}`}
           practiceSet={svdPractice}
           progress={practiceProgress}
           onProgress={updatePracticeProgress}
           onGuide={() => setMode("Guided Walkthrough")}
         />
     )}
-    </main>
+    {currentMode !== "Notes" && (
+        <div className="reset-section">
+        <button
+          type="button"
+          className="reset-button"
+          aria-expanded={showResetConfirmation}
+          onClick={() => {
+            setShowResetConfirmation(previous => !previous);
+            setResetMessage("");
+          }}
+        >
+          Reset SVD progress
+        </button>
+
+        {showResetConfirmation && (
+          <div className="reset-confirmation">
+            <p>
+              Start SVD again? This clears your saved
+              walkthrough completion and practice progress.
+            </p>
+
+            <div className="reset-actions">
+              <button
+                type="button"
+                onClick={() =>
+                  setShowResetConfirmation(false)
+                }
+              >
+                Keep my progress
+              </button>
+
+              <button
+                type="button"
+                className="reset-confirm-button"
+                onClick={resetSvdProgress}
+              >
+                Reset progress
+              </button>
+            </div>
+          </div>
+        )}
+        </div>
+    )}
+
+        <p className="reset-status" role="status">
+          {resetMessage}
+        </p>
+
+      </main>
   );
 }

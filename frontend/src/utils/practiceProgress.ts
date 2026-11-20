@@ -8,12 +8,6 @@ import {
   booleanMap,
 } from "./storage.ts";
 
-const VERSION = "v1";
-
-// Separate from walkthrough storage, even for the same topic.
-function storageKey(topicId: string): string {
-  return `mfml.practice.${VERSION}.${topicId}`;
-}
 
 // Starting state for a topic with no saved practice.
 export function emptyPracticeProgress(): PracticeProgress {
@@ -22,6 +16,7 @@ export function emptyPracticeProgress(): PracticeProgress {
     warmupDone: false,
     practiceAttempted: {},
     practiceCorrect: {},
+    challengeAttempted: [],
     challengeReviewed: [],
   };
 }
@@ -53,6 +48,8 @@ export function sanitizePracticeProgress(
       saved.practiceCorrect
     ),
 
+    challengeAttempted: stringIds(saved.challengeAttempted),
+
     challengeReviewed: stringIds(
       saved.challengeReviewed
     ),
@@ -64,19 +61,18 @@ export function loadPracticeProgress(
   topicId: string,
   storage: Storage | null = browserStorage()
 ): PracticeProgress {
-  const saved = readStored(storageKey(topicId), storage);
 
-  return sanitizePracticeProgress(saved);
+  return sanitizePracticeProgress(readStored(`mfml.practice.v1.${topicId}`, storage));
 }
 
 // Return whether saving succeeded.
 export function savePracticeProgress(
   topicId: string,
   progress: PracticeProgress,
-  storage: Storage | null = browserStorage()
+  storage = browserStorage()
 ): boolean {
   return writeStored(
-    storageKey(topicId),
+    `mfml.practice.v1.${topicId}`,
     progress,
     storage
   );

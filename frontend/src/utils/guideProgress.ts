@@ -7,13 +7,6 @@ import {
   stringIds,
 } from "./storage.ts";
 
-const VERSION = "v1";
-
-// Each topic has its own saved walkthrough progress.
-function storageKey(topicId: string): string {
-  return `mfml.guide.${VERSION}.${topicId}`;
-}
-
 //Initial state there is no saved progress
 export function emptyGuideProgress(): GuideProgress {
   return {
@@ -50,18 +43,17 @@ export function loadGuideProgress(
   topicId: string,
   storage: Storage | null = browserStorage()
 ): GuideProgress {
-  const saved = readStored(storageKey(topicId), storage);
 
-  return sanitizeGuideProgress(saved);
+  return sanitizeGuideProgress(readStored(`mfml.guide.v1.${topicId}`, storage));
 }
 
 export function saveGuideProgress(
   topicId: string,
   progress: GuideProgress,
-  storage: Storage | null = browserStorage()
+  storage = browserStorage()
 ): boolean {
   return writeStored(
-    storageKey(topicId),
+    `mfml.guide.v1.${topicId}`,
     progress,
     storage
   );
