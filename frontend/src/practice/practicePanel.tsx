@@ -30,6 +30,7 @@ export function PracticePanel({
 }: PracticePanelProps) {
   const [index, setIndex] = useState(0);
 
+
   function recordChallengeAttempt(id: string) {
   if (progress.challengeAttempted.includes(id)) {
     return;
@@ -57,14 +58,6 @@ export function PracticePanel({
       : stage === "practice"
         ? practiceSet.practice.length
         : practiceSet.challenge.length;
-
-  const correctCount = practiceSet.practice.filter(
-    item => progress.practiceCorrect[item.id]
-  ).length;
-
-  const reviewedCount = practiceSet.challenge.filter(
-    item => progress.challengeReviewed.includes(item.id)
-  ).length;
 
   function changeStage(nextStage: Stage) {
     setIndex(0);
@@ -102,16 +95,6 @@ export function PracticePanel({
     });
   }
 
-  function markChallengeReviewed(id: string) {
-    onProgress({
-      ...progress,
-      challengeReviewed: addUnique(
-        progress.challengeReviewed,
-        id
-      ),
-    });
-  }
-
   return (
     <section className="practice-panel">
       <h2>{practiceSet.title}: Practice</h2>
@@ -119,17 +102,6 @@ export function PracticePanel({
       <p>
         Review the essentials, answer short questions, then
         try an independent challenge.
-      </p>
-
-      {/* Progress summaries */}
-      <p>
-        {correctCount}/{practiceSet.practice.length} practice
-        questions answered correctly at least once.
-      </p>
-
-      <p>
-        {reviewedCount}/{practiceSet.challenge.length} challenges
-        reviewed. Reviews are not correctness grades.
       </p>
 
       {/* Stage navigation */}
@@ -142,9 +114,6 @@ export function PracticePanel({
         <p>Activities for this stage are coming soon.</p>
       ) : (
         <>
-          <p>
-            Activity {index + 1} of {total}
-          </p>
 
           {/* Warm-up flashcards */}
           {stage === "warmup" && card && (
@@ -166,13 +135,8 @@ export function PracticePanel({
                 <NumericQuestion
                   question={question}
                   onResult={recordResult}
+                  showWorkedFeedback={false}
                 />
-              )}
-
-              {progress.practiceCorrect[question.id] && (
-                <p className="completion-note">
-                  ✓ Answered correctly
-                </p>
               )}
             </div>
           )}
@@ -182,13 +146,8 @@ export function PracticePanel({
             <ChallengePanel
               key={challenge.id}
               challenge={challenge}
-              reviewed={
-                progress.challengeReviewed.includes(challenge.id)
-              }
               onAttempt={() => recordChallengeAttempt(challenge.id)}
-              onReview={() =>
-                markChallengeReviewed(challenge.id)
-              }
+              onGuide={onGuide}
             />
           )}
 
@@ -206,11 +165,17 @@ export function PracticePanel({
                 Next →
               </button>
             ) : stage === "warmup" ? (
-              <button onClick={finishWarmup}>
-                Finish warm-up →
+              <button 
+                type="button"
+                className="primary"
+                onClick={finishWarmup}>
+                Continue to Practice →
               </button>
             ) : stage === "practice" ? (
-              <button onClick={() => changeStage("challenge")}>
+              <button 
+                type="button"
+                className="primary"
+                onClick={() => changeStage("challenge")}>
                 Try the challenges →
               </button>
             ) : (
@@ -220,15 +185,11 @@ export function PracticePanel({
         </>
       )}
 
-      {progress.warmupDone && (
-        <p className="completion-note">
-          ✓ Warm-up reviewed
-        </p>
+      {stage !== "challenge" && (
+        <button type="button" onClick={onGuide}>
+          Review the walkthrough
+        </button>
       )}
-
-      <button onClick={onGuide}>
-        Review the walkthrough
-      </button>
     </section>
   );
 }

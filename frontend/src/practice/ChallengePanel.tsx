@@ -8,9 +8,8 @@ import { AnswerReveal } from '../components/AnswerReveal';
 
 type ChallengePanelProps = {
   challenge: ChallengeProblem;
-  reviewed: boolean;
   onAttempt: () => void;
-  onReview: () => void;
+  onGuide: () => void;
 };
 
 
@@ -63,7 +62,7 @@ function SupportStep({
 const factorLabels = ["U", "Σ", "V"];
 
 export function ChallengePanel({
-  challenge, reviewed, onAttempt, onReview,
+  challenge, onAttempt, onGuide,
 }: ChallengePanelProps) {
 
     const [entries, setEntries] = useState<string[]>(() =>
@@ -71,6 +70,11 @@ export function ChallengePanel({
       challenge.finalAnswer.kind === "numeric" ? 1 : 12
     ).fill("")
   );
+
+  const [hintsShown, setHintsShown] = useState(0);
+
+  const [attemptsAtLastHint, setAttemptsAtLastHint] =
+  useState(0);
 
   const [attempts, setAttempts] = useState<string[]>([]);
 
@@ -83,11 +87,18 @@ export function ChallengePanel({
   const [feedback, setFeedback] = useState("");
   const [solved, setSolved] = useState(false);
 
-  const [hasIncorrectAttempt, setHasIncorrectAttempt] =
-    useState(false);
-
   const [showCheckpoints, setShowCheckpoints] = useState(false);
 
+  const challengeHints = challenge.hints.slice(0, 2);
+
+  const hintsExhausted = hintsShown >= challengeHints.length;
+
+  const comparisonAllowed = solved || (
+    hintsExhausted &&
+    attempts.length >= 2 &&
+    attempts.length > attemptsAtLastHint
+  );
+  
   function updateEntry(index: number, value: string) {
     setEntries(previous =>
       previous.map((entry, i) =>
@@ -132,7 +143,6 @@ export function ChallengePanel({
       );
       setShowCheckpoints(false);
     } else {
-      setHasIncorrectAttempt(true);
       setFeedback(
         "Not quite. Revise your answer, request a hint, or check your intermediate steps."
       );
@@ -145,7 +155,6 @@ export function ChallengePanel({
     );
   }
   
-  const comparisonAllowed = solved || attempts.length >= 2;
 
   return (
     <article className="challenge-panel">
@@ -228,15 +237,24 @@ export function ChallengePanel({
 
       {/* Up to two challenge-level hints */}
       <HintLadderPanel
-        hints={challenge.hints.slice(0, 2)}
+        hints={challengeHints}
         allowed={attempts.length > 0}
         attempts={solved ? undefined : attempts.length}
         onAssistance={() => {}}
+        onHintLevelChange={level => {
+        setHintsShown(level);
+        setAttemptsAtLastHint(attempts.length);
+  }}
       />
 
+      {!solved && hintsExhausted && (
+        <button type="button" onClick={onGuide}>
+          Review the walkthrough
+        </button>
+      )}
+
       {/* Optional support after an incorrect final answer */}
-      {hasIncorrectAttempt &&
-        !solved &&
+      {!solved &&
         checkpoints.length > 0 && (
           <button
             type="button"
@@ -322,14 +340,6 @@ export function ChallengePanel({
 
             <h4>Check your reasoning</h4>
             <pre>{challenge.rubric}</pre>
-
-            <button
-              type="button"
-              disabled={reviewed}
-              onClick={onReview}
-            >
-              {reviewed ? "Reviewed" : "Mark as reviewed"}
-            </button>
           </div>
         </AnswerReveal>
       )}
